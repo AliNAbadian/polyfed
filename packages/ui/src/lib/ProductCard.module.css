@@ -1,0 +1,126 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  background: var(--mfe-surface);
+  border: 1px solid var(--mfe-border);
+  border-radius: var(--mfe-radius);
+  overflow: hidden;
+  box-shadow: var(--mfe-shadow);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--mfe-shadow-hover);
+}
+
+.outOfStock {
+  opacity: 0.72;
+}
+
+.media {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  background: #eef0f3;
+  overflow: hidden;
+}
+
+.media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.card:hover .media img {
+  transform: scale(1.05);
+}
+
+.category {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--mfe-text);
+  backdrop-filter: blur(4px);
+}
+
+.soldOut {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: #fff;
+  background: rgba(29, 36, 51, 0.55);
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+  flex: 1;
+}
+
+.name {
+  margin: 0;
+  font-size: 1.02rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.description {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--mfe-text-muted);
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: auto;
+  padding-top: 8px;
+}
+
+.price {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--mfe-text);
+}
+
+.action {
+  padding: 8px 14px;
+  border: none;
+  border-radius: var(--mfe-radius-sm);
+  background: var(--mfe-brand);
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.action:hover:not(:disabled) {
+  background: var(--mfe-brand-strong);
+}
+
+.action:disabled {
+  background: #c2c6cf;
+  cursor: not-allowed;
+}

@@ -1,0 +1,73 @@
+.shop {
+  max-width: var(--mfe-max-width);
+  margin: 0 auto;
+  padding: 32px 24px 56px;
+}
+
+.hero {
+  margin-bottom: 24px;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 8px;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.subtitle {
+  margin: 0;
+  max-width: 560px;
+  color: var(--mfe-text-muted);
+  line-height: 1.5;
+}
+
+.subtitle code {
+  font-size: 0.9em;
+  background: var(--mfe-brand-soft);
+  color: var(--mfe-brand-strong);
+  padding: 1px 6px;
+  border-radius: 5px;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.pill {
+  padding: 7px 14px;
+  border: 1px solid var(--mfe-border);
+  border-radius: 9999px;
+  background: var(--mfe-surface);
+  color: var(--mfe-text-muted);
+  font-size: 0.86rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.pill:hover {
+  border-color: var(--mfe-brand);
+  color: var(--mfe-brand);
+}
+
+.pillActive {
+  background: var(--mfe-brand);
+  border-color: var(--mfe-brand);
+  color: #fff;
+}
+
+.pillActive:hover {
+  color: #fff;
+}
+
+.count {
+  margin: 0 0 20px;
+  font-size: 0.88rem;
+  color: var(--mfe-text-muted);
+}

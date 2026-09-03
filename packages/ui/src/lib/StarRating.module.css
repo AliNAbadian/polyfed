@@ -1,0 +1,20 @@
+.rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.stars {
+  color: #d6dae1;
+  font-size: 1rem;
+  letter-spacing: 1px;
+}
+
+.stars .filled {
+  color: var(--mfe-warning);
+}
+
+.count {
+  font-size: 0.82rem;
+  color: var(--mfe-text-muted);
+}
