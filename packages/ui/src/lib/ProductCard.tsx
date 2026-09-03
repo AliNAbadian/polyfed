@@ -2,6 +2,7 @@ import type { Product } from './products';
 import { formatPrice } from './products';
 import { StarRating } from './StarRating';
 import styles from './ProductCard.module.css';
+import { Button } from 'antd';
 
 export interface ProductCardProps {
   product: Product;
@@ -35,14 +36,13 @@ export function ProductCard({
         <div className={styles.footer}>
           <span className={styles.price}>{formatPrice(product.price)}</span>
           {actionLabel && (
-            <button
-              type="button"
-              className={styles.action}
+            <Button
+              type="primary"
               disabled={!product.inStock}
               onClick={() => onAction?.(product)}
             >
               {actionLabel}
-            </button>
+            </Button>
           )}
         </div>
       </div>

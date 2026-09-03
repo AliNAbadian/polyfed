@@ -1,0 +1,12 @@
+---
+description: Kebab-case file names in every monorepo child (apps/*, packages/*)
+alwaysApply: true
+---
+
+# Kebab-case file names
+
+## Scope (monorepo children)
+
+Applies to **all child projects** of this repo (`apps/*`, `packages/*`), not only the workspace root.
+
+Always use kebab-case for file names (e.g. `use-shell-nav.ts`, `product-card.tsx`).

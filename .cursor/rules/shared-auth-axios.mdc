@@ -1,0 +1,47 @@
+---
+description: Shared OIDC auth gate + axios client for shell and remotes (@react-mfe/auth).
+alwaysApply: true
+---
+
+# Auth + API client (monorepo)
+
+## Package
+
+`@react-mfe/auth` (`packages/auth`)
+
+- **Shell only:** `initAuth({...})` then wrap UI in `<AuthGate>`
+- **Remotes:** import `getApiClient` / `useAuth` — session comes from shell via `localStorage` + `globalThis.__MFE_AUTH__`
+
+## Env (apps/shell `.env`)
+
+```bash
+cp .env.example apps/shell/.env
+# or root .env if Vite loads it — prefer apps/shell/.env
+```
+
+| Var | Purpose |
+| --- | --- |
+| `VITE_OIDC_AUTHORITY` | IdP issuer URL (or `disabled` to skip gate) |
+| `VITE_OIDC_CLIENT_ID` | SPA client id (or `disabled`) |
+| `VITE_OIDC_SCOPE` | optional |
+| `VITE_API_BASE_URL` | axios `baseURL` |
+
+Register redirect URIs at IdP:
+
+- `http://127.0.0.1:4200/auth/callback`
+- `http://127.0.0.1:4200/silent-renew.html`
+
+## Remote usage
+
+```ts
+import { getApiClient } from '@react-mfe/auth';
+
+const api = getApiClient();
+const { data } = await api.get('/orders');
+```
+
+Do **not** create a new axios instance per feature with its own auth header logic.
+
+## MF
+
+`oidc-client` + `axios` are singletons in `packages/mf-config/remotes.json` → `shared`.

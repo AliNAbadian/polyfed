@@ -1,29 +1,14 @@
 import { lazy, type ComponentType } from 'react';
-import { registerRemotes, loadRemote } from '@module-federation/runtime';
+import { loadRemote } from '@module-federation/runtime';
 
-// The providers this consumer loads at runtime. Edit `entry` to point at a
-// different URL (`remoteEntry.js` is what every supported bundler emits at dev
-// + build time). `name` is the provider build's federation container name and
-// must match the provider's federation `name`; `alias` is the key you pass to
-// loadRemote()/lazyProvider().
-const PROVIDERS: Array<{ alias: string; name: string; entry: string }> = [
-  {
-    alias: 'shop',
-    name: 'shop',
-    entry: 'http://localhost:5101/remoteEntry.js',
-  },
-  {
-    alias: 'cart',
-    name: 'cart',
-    entry: 'http://localhost:5102/remoteEntry.js',
-  },
-];
-
-// `type: 'module'` is required because the providers in this workspace are
-// vite-built and emit ESM remoteEntry.js. The federation runtime would load
-// it as a classic `<script>` tag otherwise and the browser would throw
-// `Cannot use import statement outside a module` (#RUNTIME-001).
-registerRemotes(PROVIDERS.map((remote) => ({ ...remote, type: 'module' })));
+// Remotes are declared once in apps/shell/vite.config.mts (federation.remotes).
+// That registers them with the federation runtime at host init and enables
+// cross-remote HMR. Do NOT call registerRemotes() here — re-registering the
+// same alias throws:
+//   "alias shop … is not allowed to be the prefix of __mfe_internal__…shop"
+//
+// loadRemote keys still use `<alias>/<expose>` matching those remotes
+// (e.g. 'shop/App', 'cart/App').
 
 export function lazyProvider<Props = unknown>(
   alias: string,

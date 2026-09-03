@@ -10,7 +10,9 @@
       "import": "./src/index.ts",
       "default": "./src/index.ts"
     },
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./styles/tailwind.css": "./src/styles/tailwind.css",
+    "./fonts/IRANSansXVF.ttf": "./src/fonts/IRANSansXVF.ttf"
   },
   "nx": {
     "projectType": "library",
@@ -19,5 +21,13 @@
       "scope:shared",
       "type:ui"
     ]
+  },
+  "dependencies": {
+    "@ant-design/cssinjs": "^2.1.2",
+    "antd": "^6.6.2"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.3",
+    "tailwindcss": "^4.3.3"
   }
 }

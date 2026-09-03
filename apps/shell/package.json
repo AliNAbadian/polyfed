@@ -9,16 +9,26 @@
     "preview": "vite preview --port 4200 --strictPort"
   },
   "dependencies": {
+    "@ant-design/cssinjs": "^2.1.2",
+    "@ant-design/icons": "^6.3.4",
     "@module-federation/runtime": "^2.4.0",
+    "@react-mfe/auth": "workspace:*",
+    "@react-mfe/mf-config": "workspace:*",
+    "@react-mfe/ui": "workspace:*",
     "@tanstack/react-router": "^1.95.3",
+    "antd": "^6.6.2",
+    "axios": "^1.20.0",
+    "oidc-client": "1.11.5",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
     "@module-federation/vite": "^1.15.5",
+    "@tailwindcss/vite": "^4.3.3",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "@vitejs/plugin-react": "^6.0.2",
+    "tailwindcss": "^4.3.3",
     "typescript": "~6.0.3",
     "vite": "^8.0.13"
   },

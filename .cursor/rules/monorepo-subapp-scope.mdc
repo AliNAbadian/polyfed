@@ -1,0 +1,37 @@
+---
+description: Clarifies that .cursor/rules apply to each monorepo child app/package (apps/*, packages/*), not only the repo root.
+alwaysApply: true
+---
+
+# Monorepo rule scope (subapps)
+
+This repository is an **Nx / workspace monorepo**. Cursor rules under `.cursor/rules/` are **not** root-only chrome.
+
+## Where rules apply
+
+Treat every **child project** as an app that must follow these rules:
+
+| Kind | Paths | Examples |
+| ---- | ----- | -------- |
+| Subapps (MF hosts / remotes) | `apps/*` | `apps/shell`, `apps/shop`, `apps/cart` |
+| Shared packages / libs | `packages/*` | `packages/ui`, `packages/mf-config`, `packages/auth` |
+
+When an agent scaffolds, refactors, or reviews code:
+
+1. Apply architecture, hook, UI/logic-split, and naming rules **inside each child** (`apps/<name>/…`, `packages/<name>/…`).
+2. Do **not** assume rules only cover the workspace root or a single `src/` at repo root.
+3. Each subapp owns its own `src/` tree; feature/page/hook layout rules map onto **that** project’s `src/`, not a fictional monorepo-wide `src/`.
+4. Shared packages (`packages/*`) follow the same separation and naming rules; they are still “children” of this repo.
+
+## Mental model
+
+```txt
+sale-platform-shoniz/          ← workspace root (tooling, nx, shared scripts)
+  apps/shell/                  ← child subapp — RULES APPLY HERE
+  apps/shop/                   ← child subapp — RULES APPLY HERE
+  apps/cart/                   ← child subapp — RULES APPLY HERE
+  packages/ui/                 ← child package — RULES APPLY HERE
+  .cursor/rules/               ← agent rules for all children above
+```
+
+If unsure whether a rule applies: **yes, if the file lives under `apps/*` or `packages/*`.**

@@ -1,47 +1,38 @@
-import { Link, Outlet } from '@tanstack/react-router';
-import styles from './app.module.css';
+import { Outlet } from '@tanstack/react-router';
+import { Layout as AntLayout } from 'antd';
+import { REMOTES, remotePath } from '@react-mfe/mf-config';
+import { ShellHeader } from './components/ui/ShellHeader';
+import { ShellSider } from './components/ui/ShellSider';
+import { useShellNav } from './hooks/useShellNav';
 
-// Persistent chrome for the shell. <Outlet /> renders the active route - the
+const { Content } = AntLayout;
+
+function titleForPath(path: string): string {
+  if (path === '/') return 'Home';
+  const remote = REMOTES.find((item) => remotePath(item.name) === path);
+  return remote?.title ?? 'MFE Store';
+}
+
+// Persistent chrome for the shell. <Outlet /> renders the active route — the
 // home overview or a federated provider page.
 export function Layout() {
-  return (
-    <div className={styles.app}>
-      <header className={styles.header}>
-        <div className={styles.headerInner}>
-          <Link to="/" className={styles.brand}>
-            <span className={styles.brandMark}>◆</span> MFE Store
-          </Link>
-          <nav className={styles.nav}>
-            <Link
-              to="/"
-              className={styles.navLink}
-              activeProps={{ className: styles.navLinkActive }}
-              activeOptions={{ exact: true }}
-            >
-              Home
-            </Link>
-            <Link
-              to="/shop"
-              className={styles.navLink}
-              activeProps={{ className: styles.navLinkActive }}
-            >
-              Shop
-            </Link>
-            <Link
-              to="/cart"
-              className={styles.navLink}
-              activeProps={{ className: styles.navLinkActive }}
-            >
-              Cart
-            </Link>
-          </nav>
-        </div>
-      </header>
+  const { selectedKeys, collapsed, setCollapsed } = useShellNav();
+  const title = titleForPath(selectedKeys[0] ?? '/');
 
-      <main className={styles.main}>
-        <Outlet />
-      </main>
-    </div>
+  return (
+    <AntLayout style={{ minHeight: '100vh' }}>
+      <ShellSider
+        collapsed={collapsed}
+        selectedKeys={selectedKeys}
+        onCollapse={setCollapsed}
+      />
+      <AntLayout>
+        <ShellHeader title={title} />
+        <Content style={{ margin: 24, minHeight: 280 }}>
+          <Outlet />
+        </Content>
+      </AntLayout>
+    </AntLayout>
   );
 }
 

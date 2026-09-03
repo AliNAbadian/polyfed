@@ -1,0 +1,59 @@
+@import 'tailwindcss';
+
+/* Scan every app + shared UI — new remotes under apps/* need no extra @source. */
+@source "../../../../apps/*/src/**/*.{js,jsx,ts,tsx}";
+@source "../**/*.{js,jsx,ts,tsx}";
+
+/* IRANSansX variable — Persian UI font (Fontiran). */
+@font-face {
+  font-family: 'IRANSansX';
+  src: url('../fonts/IRANSansXVF.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  --color-brand: #722ed1;
+  /* Tailwind `font-sans` → IRANSansX */
+  --font-sans:
+    'IRANSansX', ui-sans-serif, system-ui, sans-serif;
+}
+
+/*
+ * Default body: Persian font + ss02 (IRANSansX maps Latin/Arabic digits → Persian).
+ * Docs: font-feature-settings: "ss02"
+ */
+@layer base {
+  html {
+    font-family: var(--font-sans);
+    -webkit-font-feature-settings: 'ss02' 1;
+    font-feature-settings: 'ss02' 1;
+  }
+
+  body {
+    font-family: inherit;
+    -webkit-font-feature-settings: inherit;
+    font-feature-settings: inherit;
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    font-family: inherit;
+    -webkit-font-feature-settings: inherit;
+    font-feature-settings: inherit;
+  }
+}
+
+/* Opt-in / opt-out helpers */
+@utility font-fa-num {
+  -webkit-font-feature-settings: 'ss02' 1;
+  font-feature-settings: 'ss02' 1;
+}
+
+@utility font-lat-num {
+  -webkit-font-feature-settings: 'ss02' 0;
+  font-feature-settings: 'ss02' 0;
+}

@@ -3,11 +3,11 @@ import {
   createRoute,
   createRouter,
 } from '@tanstack/react-router';
+import { REMOTES, remotePath } from '@react-mfe/mf-config';
 import { Layout } from './Layout';
-import { CartPage, HomePage, ShopPage } from './pages';
+import { HomePage, remotePages } from './pages';
+import { AuthCallbackPage } from './pages/auth-callback-page';
 
-// Code-based route tree (no codegen / vite plugin needed). The root renders the
-// shell chrome; child routes map a path to each federated module's page.
 const rootRoute = createRootRoute({ component: Layout });
 
 const indexRoute = createRoute({
@@ -16,19 +16,25 @@ const indexRoute = createRoute({
   component: HomePage,
 });
 
-const shopRoute = createRoute({
+const authCallbackRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: '/shop',
-  component: ShopPage,
+  path: '/auth/callback',
+  component: AuthCallbackPage,
 });
 
-const cartRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/cart',
-  component: CartPage,
-});
+const remoteRoutes = REMOTES.map((remote) =>
+  createRoute({
+    getParentRoute: () => rootRoute,
+    path: remotePath(remote.name),
+    component: remotePages[remote.name],
+  }),
+);
 
-const routeTree = rootRoute.addChildren([indexRoute, shopRoute, cartRoute]);
+const routeTree = rootRoute.addChildren([
+  indexRoute,
+  authCallbackRoute,
+  ...remoteRoutes,
+]);
 
 export const router = createRouter({ routeTree });
 

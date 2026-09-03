@@ -1,0 +1,34 @@
+{
+  "shell": {
+    "name": "shell",
+    "port": 4200
+  },
+  "remotes": [
+    {
+      "name": "promotions",
+      "port": 5103,
+      "title": "Promotions",
+      "blurb": "Promotions micro-frontend remote."
+    }
+  ],
+  "shared": {
+    "react": {
+      "singleton": true
+    },
+    "react-dom": {
+      "singleton": true
+    },
+    "antd": {
+      "singleton": true
+    },
+    "@ant-design/cssinjs": {
+      "singleton": true
+    },
+    "oidc-client": {
+      "singleton": true
+    },
+    "axios": {
+      "singleton": true
+    }
+  }
+}
