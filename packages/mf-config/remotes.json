@@ -9,7 +9,7 @@
       "port": 5103,
       "title": "Promotions",
       "blurb": "Promotions micro-frontend remote.",
-      "repo": "template:example-promotions",
+      "repo": "https://github.com/AliNAbadian/nx-remote-promotions.git",
       "entry": {
         "dev": "http://localhost:5103/remoteEntry.js",
         "prod": ""
