@@ -15,10 +15,13 @@
     "skipDefaultLibCheck": true,
     "paths": {
       "@react-mfe/ui": ["./packages/ui/src/index.ts"],
-      "@react-mfe/ui/styles/tailwind.css": ["./packages/ui/src/styles/tailwind.css"],
+      "@react-mfe/ui/styles/tailwind.css": [
+        "./packages/ui/src/styles/tailwind.css"
+      ],
       "@react-mfe/mf-config": ["./packages/mf-config/src/index.ts"],
       "@react-mfe/mf-config/vite": ["./packages/mf-config/vite/index.d.ts"],
-      "@react-mfe/auth": ["./packages/auth/src/index.ts"]
+      "@react-mfe/auth": ["./packages/auth/src/index.ts"],
+      "@react-mfe/workspace-plugin": ["./tools/workspace-plugin/src/index.ts"]
     },
     "strict": false,
     "noUncheckedSideEffectImports": false,

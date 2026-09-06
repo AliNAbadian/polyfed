@@ -1,0 +1,13 @@
+export function App() {
+  return (
+    <section className="p-6" data-testid="<%= name %>">
+      <h1 className="text-2xl font-bold"><%= title %></h1>
+      <p className="mt-2 text-neutral-600">
+        New remote <code><%= name %></code> on port <%= port %>. Edit{' '}
+        <code>apps/<%= name %>/src/App.tsx</code>.
+      </p>
+    </section>
+  );
+}
+
+export default App;

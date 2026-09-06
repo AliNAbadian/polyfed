@@ -1,0 +1,9 @@
+{
+  "generators": {
+    "remote": {
+      "factory": "./src/generators/remote/remote",
+      "schema": "./src/generators/remote/schema.json",
+      "description": "Scaffold an MF remote app and register it in remotes.json"
+    }
+  }
+}

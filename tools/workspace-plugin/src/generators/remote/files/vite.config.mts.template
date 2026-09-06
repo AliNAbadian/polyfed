@@ -1,0 +1,10 @@
+import { createRemoteViteConfig, findRemote } from '@react-mfe/mf-config/vite';
+
+const remote = findRemote('<%= name %>');
+if (!remote) throw new Error('Remote "<%= name %>" missing from remotes.json');
+
+export default createRemoteViteConfig({
+  appDir: import.meta.dirname,
+  name: remote.name,
+  port: remote.port,
+});

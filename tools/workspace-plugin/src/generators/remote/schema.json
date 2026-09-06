@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/schema",
+  "$id": "Remote",
+  "title": "MF Remote",
+  "description": "Scaffold a Module Federation remote under apps/<name> and register it in remotes.json",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Kebab-case remote name (also the route path)",
+      "pattern": "^[a-z][a-z0-9-]*$",
+      "$default": {
+        "$source": "argv",
+        "index": 0
+      },
+      "x-prompt": "Remote name (kebab-case)?"
+    },
+    "port": {
+      "type": "number",
+      "description": "Dev server port (default: next free after remotes.json)",
+      "x-prompt": "Dev port? (leave empty for auto)"
+    },
+    "title": {
+      "type": "string",
+      "description": "Display title in shell sider / home"
+    },
+    "blurb": {
+      "type": "string",
+      "description": "Short description on the shell home card"
+    }
+  },
+  "required": ["name"]
+}
