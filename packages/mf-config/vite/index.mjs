@@ -3,8 +3,10 @@ export { createShellViteConfig } from './create-shell-config.mjs';
 export {
   federationShared,
   findRemote,
+  isRemoteCheckedOut,
   loadRemotesConfig,
+  remoteEntryUrl,
+  resolveRemoteEntry,
   uiPackageAliases,
   workspaceRootFromApp,
-  remoteEntryUrl,
 } from './shared.mjs';

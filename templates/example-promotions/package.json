@@ -1,0 +1,54 @@
+{
+  "name": "@react-mfe/promotions",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port 5103 --strictPort",
+    "build": "vite build",
+    "preview": "vite preview --port 5103 --strictPort"
+  },
+  "dependencies": {
+    "@ant-design/cssinjs": "^2.1.2",
+    "@react-mfe/auth": "workspace:*",
+    "@react-mfe/mf-config": "workspace:*",
+    "@react-mfe/ui": "workspace:*",
+    "antd": "^6.6.2",
+    "axios": "^1.20.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@module-federation/vite": "^1.15.5",
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^6.0.2",
+    "tailwindcss": "^4.3.3",
+    "typescript": "~6.0.3",
+    "vite": "^8.0.13"
+  },
+  "nx": {
+    "projectType": "application",
+    "sourceRoot": "apps/promotions/src",
+    "tags": ["scope:promotions", "type:provider"],
+    "targets": {
+      "dev": {
+        "executor": "nx:run-commands",
+        "continuous": true,
+        "options": {
+          "command": "vite",
+          "cwd": "apps/promotions"
+        },
+        "dependsOn": ["@react-mfe/shell:dev"]
+      },
+      "build": {
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "vite build",
+          "cwd": "apps/promotions"
+        }
+      }
+    }
+  }
+}

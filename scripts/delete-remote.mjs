@@ -1,11 +1,13 @@
 #!/usr/bin/env bun
 /**
- * Remove a Module Federation remote from the monorepo registry.
+ * Remove a Module Federation remote from the platform registry.
  *
  * Usage:
  *   bun run delete-remote --name promotions
  *   bun run delete-remote --name promotions --keep-files   # registry only
  *   bun run delete-remote --name cart --force              # delete orphan apps/<name>
+ *
+ * For local checkout only (keep remotes.json): bun run drop-remote --name <n>
  *
  * What it does:
  * 1. Removes the entry from packages/mf-config/remotes.json (if present)

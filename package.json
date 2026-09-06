@@ -5,6 +5,8 @@
   "scripts": {
     "dev": "bun scripts/dev-all.mjs",
     "create-remote": "nx g @react-mfe/workspace-plugin:remote --no-interactive",
+    "pull-remote": "bun scripts/pull-remote.mjs",
+    "drop-remote": "bun scripts/drop-remote.mjs",
     "delete-remote": "bun scripts/delete-remote.mjs"
   },
   "private": true,

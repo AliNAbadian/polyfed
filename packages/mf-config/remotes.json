@@ -8,7 +8,12 @@
       "name": "promotions",
       "port": 5103,
       "title": "Promotions",
-      "blurb": "Promotions micro-frontend remote."
+      "blurb": "Promotions micro-frontend remote.",
+      "repo": "template:example-promotions",
+      "entry": {
+        "dev": "http://localhost:5103/remoteEntry.js",
+        "prod": ""
+      }
     }
   ],
   "shared": {

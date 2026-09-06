@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -11,6 +11,30 @@ export function loadRemotesConfig() {
 
 export function workspaceRootFromApp(appDirname) {
   return resolve(appDirname, '../..');
+}
+
+export function isRemoteCheckedOut(name, workspaceRoot) {
+  return existsSync(resolve(workspaceRoot, 'apps', name));
+}
+
+/** Localhost entry from port. */
+export function remoteEntryUrl(port) {
+  return `http://localhost:${port}/remoteEntry.js`;
+}
+
+/**
+ * Shell MF entry: checked-out remote → entry.dev / localhost;
+ * missing local app → entry.prod if set, else entry.dev / localhost.
+ */
+export function resolveRemoteEntry(remote, workspaceRoot) {
+  const checkedOut = isRemoteCheckedOut(remote.name, workspaceRoot);
+  if (checkedOut) {
+    return remote.entry?.dev ?? remoteEntryUrl(remote.port);
+  }
+  if (remote.entry?.prod) {
+    return remote.entry.prod;
+  }
+  return remote.entry?.dev ?? remoteEntryUrl(remote.port);
 }
 
 export function uiPackageAliases(appDirname) {
@@ -35,10 +59,6 @@ export function uiPackageAliases(appDirname) {
 
 export function federationShared() {
   return loadRemotesConfig().shared;
-}
-
-export function remoteEntryUrl(port) {
-  return `http://localhost:${port}/remoteEntry.js`;
 }
 
 export function findRemote(name) {

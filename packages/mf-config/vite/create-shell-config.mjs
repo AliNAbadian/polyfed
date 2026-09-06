@@ -6,13 +6,14 @@ import { resolve } from 'node:path';
 import {
   federationShared,
   loadRemotesConfig,
-  remoteEntryUrl,
+  resolveRemoteEntry,
   uiPackageAliases,
   workspaceRootFromApp,
 } from './shared.mjs';
 
 /**
  * Shell Vite config. Remotes come from remotes.json — add there, not here.
+ * Entry URLs prefer local checkout; otherwise entry.prod when set.
  */
 export function createShellViteConfig(options) {
   const { appDir } = options;
@@ -26,7 +27,7 @@ export function createShellViteConfig(options) {
       {
         type: 'module',
         name: remote.name,
-        entry: remoteEntryUrl(remote.port),
+        entry: resolveRemoteEntry(remote, workspaceRoot),
       },
     ]),
   );

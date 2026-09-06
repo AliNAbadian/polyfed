@@ -13,7 +13,7 @@ Treat every **child project** as an app that must follow these rules:
 
 | Kind | Paths | Examples |
 | ---- | ----- | -------- |
-| Subapps (MF hosts / remotes) | `apps/*` | `apps/shell`, `apps/shop`, `apps/cart` |
+| Subapps (MF host + checked-out remotes) | `apps/*` | `apps/shell`, `apps/<remote>` (polyrepo checkout) |
 | Shared packages / libs | `packages/*` | `packages/ui`, `packages/mf-config`, `packages/auth` |
 
 When an agent scaffolds, refactors, or reviews code:
@@ -22,15 +22,15 @@ When an agent scaffolds, refactors, or reviews code:
 2. Do **not** assume rules only cover the workspace root or a single `src/` at repo root.
 3. Each subapp owns its own `src/` tree; feature/page/hook layout rules map onto **that** project’s `src/`, not a fictional monorepo-wide `src/`.
 4. Shared packages (`packages/*`) follow the same separation and naming rules; they are still “children” of this repo.
+5. Remotes are **polyrepo**: only `apps/shell` is committed to platform; other `apps/*` come from `bun run pull-remote`.
 
 ## Mental model
 
 ```txt
-sale-platform-shoniz/          ← workspace root (tooling, nx, shared scripts)
-  apps/shell/                  ← child subapp — RULES APPLY HERE
-  apps/shop/                   ← child subapp — RULES APPLY HERE
-  apps/cart/                   ← child subapp — RULES APPLY HERE
-  packages/ui/                 ← child package — RULES APPLY HERE
+sale-platform-shoniz/          ← platform git (shell + packages + tools)
+  apps/shell/                  ← host — RULES APPLY HERE
+  apps/<remote>/               ← optional local clone — RULES APPLY HERE
+  packages/ui/                 ← shared — RULES APPLY HERE
   .cursor/rules/               ← agent rules for all children above
 ```
 
