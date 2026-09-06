@@ -25,3 +25,5 @@ bun run create-remote --name=orders --port=5104
 ```
 
 Registry: `packages/mf-config/remotes.json` (`repo`, `entry.dev`, `entry.prod`).
+
+Platform `.gitignore` hides remotes from git. `.nxignore` re-includes them for the Nx project graph only.

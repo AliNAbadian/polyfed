@@ -1,5 +1,3 @@
-import { existsSync } from 'node:fs';
-import { resolve } from 'node:path';
 import remotesJson from '../remotes.json' with { type: 'json' };
 
 export type RemoteEntryUrls = {
@@ -32,7 +30,7 @@ export function remotePath(name: string): string {
   return `/${name}`;
 }
 
-/** Default localhost entry from port. Prefer resolveRemoteEntry for shell. */
+/** Default localhost entry from port (browser-safe). */
 export function remoteEntryUrl(port: number): string {
   return `http://localhost:${port}/remoteEntry.js`;
 }
@@ -41,37 +39,7 @@ export function findRemote(name: string): RemoteDefinition | undefined {
   return REMOTES.find((remote) => remote.name === name);
 }
 
-/** True when apps/<name> exists on disk (local polyrepo checkout). */
-export function isRemoteCheckedOut(
-  name: string,
-  workspaceRoot = process.cwd(),
-): boolean {
-  return existsSync(resolve(workspaceRoot, 'apps', name));
-}
-
-/**
- * Shell MF entry URL: local checkout → entry.dev / localhost;
- * otherwise entry.prod if set, else still entry.dev / localhost.
- */
-export function resolveRemoteEntry(
-  remote: RemoteDefinition,
-  workspaceRoot = process.cwd(),
-): string {
-  const checkedOut = isRemoteCheckedOut(remote.name, workspaceRoot);
-  if (checkedOut) {
-    return remote.entry?.dev ?? remoteEntryUrl(remote.port);
-  }
-  if (remote.entry?.prod) {
-    return remote.entry.prod;
-  }
+/** Prefer entry.dev, else localhost from port (browser-safe; no fs). */
+export function browserRemoteEntry(remote: RemoteDefinition): string {
   return remote.entry?.dev ?? remoteEntryUrl(remote.port);
-}
-
-export function allDevProjectNames(workspaceRoot = process.cwd()): string[] {
-  return [
-    `@react-mfe/${SHELL.name}`,
-    ...REMOTES.filter((remote) =>
-      isRemoteCheckedOut(remote.name, workspaceRoot),
-    ).map((remote) => `@react-mfe/${remote.name}`),
-  ];
 }

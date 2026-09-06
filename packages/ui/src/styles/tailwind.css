@@ -1,6 +1,7 @@
 @import 'tailwindcss';
 
-/* Scan every app + shared UI — new remotes under apps/* need no extra @source. */
+/* Scan every app + shared UI — new remotes under apps/* need no extra @source.
+ * Explicit @source still scans gitignored polyrepo checkouts. */
 @source "../../../../apps/*/src/**/*.{js,jsx,ts,tsx}";
 @source "../**/*.{js,jsx,ts,tsx}";
 

@@ -32,6 +32,9 @@ export function createApiClient(
   });
 
   client.interceptors.request.use(async (config) => {
+    if (!isAuthInitialized()) {
+      return config;
+    }
     const token = await getAccessToken();
     if (token) {
       config.headers = config.headers ?? {};

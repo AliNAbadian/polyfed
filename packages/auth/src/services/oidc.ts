@@ -90,12 +90,14 @@ export function isAuthInitialized(): boolean {
 }
 
 export async function getAccessToken(): Promise<string | null> {
+  if (!isAuthInitialized()) return null;
   const user = await getUserManager().getUser();
   if (!user || user.expired) return null;
   return user.access_token ?? null;
 }
 
 export async function getUser(): Promise<User | null> {
+  if (!isAuthInitialized()) return null;
   return getUserManager().getUser();
 }
 

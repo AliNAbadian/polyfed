@@ -34,6 +34,10 @@ if (!existsSync(resolve(root, 'apps', remotes.shell.name))) {
   process.exit(1);
 }
 
+console.log(
+  `Starting continuous Vite (does not exit). Shell http://127.0.0.1:${remotes.shell.port}/ — Ctrl+C to stop.\n`,
+);
+
 const result = spawnSync(
   'npx',
   [

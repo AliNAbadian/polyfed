@@ -4,10 +4,8 @@ export {
   MF_SHARED,
   remotePath,
   remoteEntryUrl,
-  resolveRemoteEntry,
-  isRemoteCheckedOut,
+  browserRemoteEntry,
   findRemote,
-  allDevProjectNames,
 } from './remotes';
 export type {
   RemoteDefinition,

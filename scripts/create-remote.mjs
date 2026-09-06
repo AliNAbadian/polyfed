@@ -219,7 +219,9 @@ createRoot(container).render(
 
 writeFileSync(
   join(appDir, 'src/App.tsx'),
-  `export function App() {
+  `import '@react-mfe/ui/styles/tailwind.css';
+
+export function App() {
   return (
     <section className="p-6" data-testid="${name}">
       <h1 className="text-2xl font-bold">${title}</h1>

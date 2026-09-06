@@ -1,0 +1,5 @@
+# Gitignores polyrepo remotes (apps/* except shell) so they stay out of
+# platform git. Nx must still see those package.json files for the project
+# graph — negation here re-includes them for Nx only (not for git).
+!/apps/
+!/apps/**
