@@ -20,6 +20,7 @@ bun run pull-remote --name orders --force   # replace local checkout
 
 Needs `"repo"` on the remote in `packages/mf-config/remotes.json`
 (git URL or `template:<folder>` under `templates/`).
+`nav.json` is the browser slice (name/title/blurb) — keep in sync via generator / `writeRemotesConfig` (delete-remote), not hand-edit alone.
 
 ## Scaffold a new remote
 
@@ -36,7 +37,7 @@ Then init/push `apps/<name>` as its **own** git repo and set `"repo"` in remotes
 
 | Piece | Where | Manual? |
 | ----- | ----- | ------- |
-| Registry | `packages/mf-config/remotes.json` | generator / you |
+| Registry | `packages/mf-config/remotes.json` + `nav.json` | generator / you |
 | Local app | `apps/<name>/` | generator or pull-remote |
 | Shell MF / routes / sider | read `REMOTES` | auto |
 | `bun run dev` | only **checked-out** remotes + shell | auto |

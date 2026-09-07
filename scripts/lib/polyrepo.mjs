@@ -15,12 +15,32 @@ export function remotesPath(root) {
   return join(root, 'packages/mf-config/remotes.json');
 }
 
+export function navPath(root) {
+  return join(root, 'packages/mf-config/nav.json');
+}
+
 export function readRemotesConfig(root) {
   return JSON.parse(readFileSync(remotesPath(root), 'utf8'));
 }
 
+/** Derive browser nav slice from full registry (no repo/entry/shared). */
+export function toNavConfig(config) {
+  return {
+    shell: {
+      name: config.shell.name,
+      port: config.shell.port,
+    },
+    remotes: config.remotes.map(({ name, title, blurb }) => ({
+      name,
+      title,
+      blurb,
+    })),
+  };
+}
+
 export function writeRemotesConfig(root, config) {
   writeFileSync(remotesPath(root), `${JSON.stringify(config, null, 2)}\n`);
+  writeFileSync(navPath(root), `${JSON.stringify(toNavConfig(config), null, 2)}\n`);
 }
 
 export function appDir(root, name) {

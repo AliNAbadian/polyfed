@@ -21,12 +21,31 @@ type RemotesFile = {
 };
 
 const REMOTES_PATH = 'packages/mf-config/remotes.json';
+const NAV_PATH = 'packages/mf-config/nav.json';
 
 function titleCase(value: string): string {
   return value
     .split('-')
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(' ');
+}
+
+function toNavJson(config: RemotesFile): string {
+  return `${JSON.stringify(
+    {
+      shell: {
+        name: config.shell.name,
+        port: config.shell.port,
+      },
+      remotes: config.remotes.map(({ name, title, blurb }) => ({
+        name,
+        title,
+        blurb,
+      })),
+    },
+    null,
+    2,
+  )}\n`;
 }
 
 function readRemotes(tree: Tree): RemotesFile {
@@ -88,6 +107,7 @@ export async function remoteGenerator(
     },
   });
   tree.write(REMOTES_PATH, `${JSON.stringify(config, null, 2)}\n`);
+  tree.write(NAV_PATH, toNavJson(config));
 
   generateFiles(tree, path.join(__dirname, 'files'), projectRoot, {
     name,
@@ -102,7 +122,7 @@ export async function remoteGenerator(
   return () => {
     logger.info(`Created remote @react-mfe/${name} on port ${port}`);
     logger.info(`  ${projectRoot}/  (gitignored by platform — own git repo)`);
-    logger.info('  remotes.json updated');
+    logger.info('  remotes.json + nav.json updated');
     logger.info('');
     logger.info('Polyrepo next steps:');
     logger.info(`  1. bun install && bun run dev`);
