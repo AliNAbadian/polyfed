@@ -41,6 +41,14 @@
           "command": "vite build",
           "cwd": "apps/www"
         }
+      },
+      "preview": {
+        "executor": "nx:run-commands",
+        "continuous": true,
+        "options": {
+          "command": "vite preview",
+          "cwd": "apps/www"
+        }
       }
     }
   }
