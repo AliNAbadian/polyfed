@@ -4,9 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite --port 5103 --strictPort",
+    "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview --port 5103 --strictPort"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@ant-design/cssinjs": "^2.1.2",
@@ -31,10 +31,7 @@
   "nx": {
     "projectType": "application",
     "sourceRoot": "apps/promotions/src",
-    "tags": [
-      "scope:promotions",
-      "type:provider"
-    ],
+    "tags": ["scope:promotions", "type:provider"],
     "targets": {
       "dev": {
         "executor": "nx:run-commands",
@@ -43,9 +40,7 @@
           "command": "vite",
           "cwd": "apps/promotions"
         },
-        "dependsOn": [
-          "@react-mfe/shell:dev"
-        ]
+        "dependsOn": ["@react-mfe/shell:dev"]
       },
       "build": {
         "executor": "nx:run-commands",

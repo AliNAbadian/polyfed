@@ -1,0 +1,18 @@
+{
+  "shell": {
+    "name": "shell",
+    "port": 4200
+  },
+  "remotes": [
+    {
+      "name": "promotions",
+      "title": "Promotions",
+      "blurb": "Promotions micro-frontend remote."
+    },
+    {
+      "name": "targeting",
+      "title": "Targeting",
+      "blurb": "Targeting micro-frontend remote."
+    }
+  ]
+}

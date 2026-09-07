@@ -14,17 +14,38 @@ type RemotesFile = {
     port: number;
     title: string;
     blurb: string;
+    repo?: string;
+    entry?: { dev?: string; prod?: string };
   }>;
   shared: Record<string, unknown>;
 };
 
 const REMOTES_PATH = 'packages/mf-config/remotes.json';
+const NAV_PATH = 'packages/mf-config/nav.json';
 
 function titleCase(value: string): string {
   return value
     .split('-')
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(' ');
+}
+
+function toNavJson(config: RemotesFile): string {
+  return `${JSON.stringify(
+    {
+      shell: {
+        name: config.shell.name,
+        port: config.shell.port,
+      },
+      remotes: config.remotes.map(({ name, title, blurb }) => ({
+        name,
+        title,
+        blurb,
+      })),
+    },
+    null,
+    2,
+  )}\n`;
 }
 
 function readRemotes(tree: Tree): RemotesFile {
@@ -72,9 +93,21 @@ export async function remoteGenerator(
 
   const title = options.title ?? titleCase(name);
   const blurb = options.blurb ?? `${title} micro-frontend remote.`;
+  const entryDev = `http://127.0.0.1:${port}/remoteEntry.js`;
 
-  config.remotes.push({ name, port, title, blurb });
+  config.remotes.push({
+    name,
+    port,
+    title,
+    blurb,
+    ...(options.repo ? { repo: options.repo } : {}),
+    entry: {
+      dev: entryDev,
+      prod: options.prodEntry ?? '',
+    },
+  });
   tree.write(REMOTES_PATH, `${JSON.stringify(config, null, 2)}\n`);
+  tree.write(NAV_PATH, toNavJson(config));
 
   generateFiles(tree, path.join(__dirname, 'files'), projectRoot, {
     name,
@@ -88,9 +121,21 @@ export async function remoteGenerator(
 
   return () => {
     logger.info(`Created remote @react-mfe/${name} on port ${port}`);
-    logger.info(`  ${projectRoot}/`);
-    logger.info('  remotes.json updated (shell / bun run dev pick it up)');
-    logger.info('Next: bun install && bun run dev');
+    logger.info(`  ${projectRoot}/  (gitignored by platform — own git repo)`);
+    logger.info('  remotes.json + nav.json updated');
+    logger.info('');
+    logger.info('Polyrepo next steps:');
+    logger.info(`  1. bun install && bun run dev`);
+    logger.info(`  2. cd apps/${name} && git init && git add . && git commit -m "chore: scaffold remote"`);
+    logger.info('  3. Create empty remote repo → git remote add origin <url> && git push -u origin main');
+    if (options.repo) {
+      logger.info(`  4. repo already set: ${options.repo}`);
+    } else {
+      logger.info(
+        `  4. Set "repo": "<git-url>" on ${name} in packages/mf-config/remotes.json`,
+      );
+    }
+    logger.info('  5. Teammates: bun run pull-remote --name ' + name);
   };
 }
 

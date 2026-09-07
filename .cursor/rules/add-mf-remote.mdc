@@ -1,48 +1,57 @@
 ---
-description: How to add a new Module Federation remote — use the Nx generator, not copy-paste.
+description: How to add / pull Module Federation remotes in this polyrepo platform.
 alwaysApply: true
 ---
 
-# Adding a new MF remote
+# Adding / pulling an MF remote (polyrepo)
 
-Do **not** hand-copy vite configs, shell remotes, router routes, sider links, or Tailwind `@source` lines.
+Platform git = **shell + packages + tools**. Remotes are **separate git repos**,
+optionally checked out under `apps/<name>` (gitignored by platform).
 
-## Nx generator (preferred)
+Do **not** hand-copy vite configs, shell remotes, router routes, or sider links.
+
+## Pull an existing remote (most common)
+
+```bash
+bun run pull-remote --name promotions
+bun run pull-remote --all
+bun run pull-remote --name orders --force   # replace local checkout
+```
+
+Needs `"repo"` on the remote in `packages/mf-config/remotes.json`
+(git URL or `template:<folder>` under `templates/`).
+`nav.json` is the browser slice (name/title/blurb) — keep in sync via generator / `writeRemotesConfig` (delete-remote), not hand-edit alone.
+
+## Scaffold a new remote
 
 ```bash
 nx g @react-mfe/workspace-plugin:remote orders --port=5104 --no-interactive
-# optional: --title=Orders --blurb="Order list remote"
-# port omitted → next free port from remotes.json
+# optional: --title=Orders --blurb="…" --repo=https://git…/orders.git --prodEntry=https://…/remoteEntry.js
 ```
 
-Or:
+Or: `bun run create-remote --name=orders --port=5104`
 
-```bash
-bun run create-remote --name=orders --port=5104
-```
+Then init/push `apps/<name>` as its **own** git repo and set `"repo"` in remotes.json.
 
-## What that updates
+## What updates
 
 | Piece | Where | Manual? |
 | ----- | ----- | ------- |
-| Registry | `packages/mf-config/remotes.json` | generator |
-| App scaffold | `apps/<name>/` | generator |
-| Shell MF / routes / sider / home | read `REMOTES` | auto |
-| `bun run dev` | `scripts/dev-all.mjs` | auto |
-| Tailwind scan | `apps/*/src` glob | auto |
+| Registry | `packages/mf-config/remotes.json` + `nav.json` | generator / you |
+| Local app | `apps/<name>/` | generator or pull-remote |
+| Shell MF / routes / sider | read `REMOTES` | auto |
+| `bun run dev` | only **checked-out** remotes + shell | auto |
 
-Plugin lives at `tools/workspace-plugin` (`remote` generator).
+## Local checkout only
 
-## After create
+```bash
+bun run drop-remote --name promotions   # delete apps/promotions, keep registry
+```
 
-1. Implement UI in `apps/<name>/src/App.tsx` (expose stays `./App`).
-2. `bun run dev`.
-
-## Removing a remote
+## Unregister entirely
 
 ```bash
 bun run delete-remote --name promotions
-bun run delete-remote --name cart --force   # orphan folder after Vite lock
 ```
 
 Stop `bun run dev` first on Windows (`EACCES` / `EBUSY`).

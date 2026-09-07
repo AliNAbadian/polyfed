@@ -12,6 +12,7 @@
   "plugins": [
     {
       "plugin": "@nx/vitest",
+      "exclude": ["templates/**/*", "apps/**/*"],
       "options": {
         "testTargetName": "test",
         "ciTargetName": "test-ci",

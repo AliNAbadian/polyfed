@@ -1,10 +1,13 @@
 {
-  "name": "@react-mfe-template/source",
-  "version": "0.0.0",
+  "name": "polyfed",
+  "version": "0.1.0",
+  "description": "Polyfed — Polyrepo Module Federation for React (Nx, Vite, Bun)",
   "license": "MIT",
   "scripts": {
     "dev": "bun scripts/dev-all.mjs",
     "create-remote": "nx g @react-mfe/workspace-plugin:remote --no-interactive",
+    "pull-remote": "bun scripts/pull-remote.mjs",
+    "drop-remote": "bun scripts/drop-remote.mjs",
     "delete-remote": "bun scripts/delete-remote.mjs"
   },
   "private": true,
@@ -40,6 +43,9 @@
   "dependencies": {
     "@ant-design/cssinjs": "^2.1.2",
     "@module-federation/runtime": "^2.4.0",
+    "@react-mfe/auth": "workspace:*",
+    "@react-mfe/mf-config": "workspace:*",
+    "@react-mfe/ui": "workspace:*",
     "@tanstack/react-router": "^1.95.3",
     "antd": "^6.6.2",
     "axios": "^1.20.0",

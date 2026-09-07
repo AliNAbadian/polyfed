@@ -3,6 +3,7 @@ import { AppstoreOutlined, HomeOutlined } from '@ant-design/icons';
 import { Layout, Menu, Typography } from 'antd';
 import type { MenuProps } from 'antd';
 import { REMOTES, remotePath } from '@react-mfe/mf-config';
+import { isRemoteLoadable } from '../../remote-availability';
 
 const { Sider } = Layout;
 
@@ -17,11 +18,19 @@ function buildMenuItems(): MenuProps['items'] {
         </Link>
       ),
     },
-    ...REMOTES.map((remote) => ({
-      key: remotePath(remote.name),
-      icon: <AppstoreOutlined />,
-      label: <Link to={remotePath(remote.name)}>{remote.title}</Link>,
-    })),
+    ...REMOTES.map((remote) => {
+      const loadable = isRemoteLoadable(remote.name);
+      return {
+        key: remotePath(remote.name),
+        icon: <AppstoreOutlined />,
+        label: (
+          <Link to={remotePath(remote.name)}>
+            {remote.title}
+            {!loadable ? ' · offline' : ''}
+          </Link>
+        ),
+      };
+    }),
   ];
 }
 

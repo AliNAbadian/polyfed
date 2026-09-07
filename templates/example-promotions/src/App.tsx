@@ -1,14 +1,10 @@
-import { getApiClient } from '@react-mfe/auth';
-import { Button } from 'antd';
+import '@react-mfe/ui/styles/tailwind.css';
 
 export function App() {
-  const api = getApiClient();
-
-  api.get('');
   return (
     <section className="p-6" data-testid="promotions">
       <h1 className="text-2xl font-bold">Promotions</h1>
-      <p className="mt-2 text-neutral-600!">asdasd</p>
+      <p className="mt-2 text-neutral-600">Promotions micro-frontend remote.</p>
     </section>
   );
 }

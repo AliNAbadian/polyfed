@@ -3,14 +3,16 @@ import react from '@vitejs/plugin-react';
 import { federation } from '@module-federation/vite';
 import tailwindcss from '@tailwindcss/vite';
 import {
+  DEV_HOST,
   federationShared,
+  getDevOrigin,
   uiPackageAliases,
   workspaceRootFromApp,
 } from './shared.mjs';
 
 /**
- * Shared Vite config for every MF remote (shop, cart, …).
- * New remotes only pass name + port (+ appDir).
+ * Shared Vite config for every MF remote.
+ * New remotes only pass name + port (+ appDir). Port comes from remotes.json via caller.
  */
 export function createRemoteViteConfig(options) {
   const {
@@ -25,12 +27,12 @@ export function createRemoteViteConfig(options) {
     server: {
       port,
       strictPort: true,
-      origin: `http://localhost:${port}`,
-      host: '127.0.0.1',
+      origin: getDevOrigin(port),
+      host: DEV_HOST,
       cors: true,
       fs: { allow: [workspaceRoot] },
     },
-    preview: { port, strictPort: true, cors: true },
+    preview: { port, strictPort: true, host: DEV_HOST, cors: true },
     build: { target: 'chrome89' },
     optimizeDeps: { exclude: ['@react-mfe/ui', '@react-mfe/auth'] },
     resolve: { alias: uiPackageAliases(appDir) },

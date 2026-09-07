@@ -22,7 +22,9 @@ export class ProviderBoundary extends Component<
           <strong>Provider &quot;{this.props.name}&quot; unavailable.</strong>
           <p>{this.state.error.message}</p>
           <p className={styles.boundaryHint}>
-            Start it with <code>nx dev {this.props.name}</code>.
+            Checkout missing? <code>bun run pull-remote --name {this.props.name}</code>
+            <br />
+            Already local? keep <code>bun run dev</code> running (Vite for that remote).
           </p>
         </div>
       );

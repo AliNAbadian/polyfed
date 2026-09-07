@@ -12,6 +12,7 @@
       "default": "./src/index.ts"
     },
     "./remotes.json": "./remotes.json",
+    "./nav.json": "./nav.json",
     "./vite": {
       "types": "./vite/index.d.ts",
       "import": "./vite/index.mjs",

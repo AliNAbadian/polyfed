@@ -16,7 +16,9 @@
     "paths": {
       "@react-mfe/ui": ["../../packages/ui/src/index.ts"],
       "@react-mfe/mf-config": ["../../packages/mf-config/src/index.ts"],
-      "@react-mfe/mf-config/vite": ["../../packages/mf-config/vite/index.d.ts"],
+      "@react-mfe/mf-config/vite": [
+        "../../packages/mf-config/vite/index.d.ts"
+      ],
       "@react-mfe/auth": ["../../packages/auth/src/index.ts"]
     },
     "noUncheckedSideEffectImports": false,

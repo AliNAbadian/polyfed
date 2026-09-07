@@ -54,16 +54,9 @@ Thumbs.db
 vitest.config.*.timestamp*
 .nx/polygraph
 
-# Secrets / local env (Vite reads apps/shell/.env)
-.env
-**/.env
-!**/.env.example
-
 # Polyrepo: only shell lives in this platform repo.
 # Remotes are separate git repos — clone with: bun run pull-remote --name <remote>
 /apps/*
 !/apps/shell/
 !/apps/shell/**
 !/apps/README.md
-# Re-hide secrets after shell un-ignore
-/apps/shell/.env

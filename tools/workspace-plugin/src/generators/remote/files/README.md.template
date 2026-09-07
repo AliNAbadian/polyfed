@@ -1,0 +1,20 @@
+# <%= title %> remote (polyrepo)
+
+Own git repo. Platform clones it via:
+
+```sh
+bun run pull-remote --name <%= name %>
+```
+
+After first scaffold, push this folder to a private remote and set `"repo"` in
+platform `packages/mf-config/remotes.json`.
+
+## Tailwind
+
+Import shared CSS in the **exposed** `App` (shell loads `./App`, not bootstrap):
+
+```ts
+import '@react-mfe/ui/styles/tailwind.css';
+```
+
+`createRemoteViteConfig` already registers `@tailwindcss/vite`.

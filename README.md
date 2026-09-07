@@ -1,186 +1,294 @@
-# Nx React Module Federation Template
+# Polyfed
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+**Polyrepo Module Federation for React** — Nx · Vite · Bun · Ant Design
 
-A production-ready monorepo template for building **Vite-powered React Module Federation** apps with Nx - the fastest
-way to split a frontend into independently deployable micro-frontends without giving up a great monorepo developer
-experience.
+> Clone the **platform**. Pull only the remotes you have permission for. Run the shell against local checkouts or deployed `remoteEntry.js` URLs.
 
+[![Nx](https://img.shields.io/badge/Nx-23-143055?logo=nx)](https://nx.dev)
+[![Vite](https://img.shields.io/badge/Vite-8-646CFF?logo=vite)](https://vite.dev)
+[![Module Federation](https://img.shields.io/badge/Module%20Federation-Vite-blue)](https://module-federation.io)
+[![Bun](https://img.shields.io/badge/Bun-workspaces-fbf0df?logo=bun)](https://bun.sh)
+[![React](https://img.shields.io/badge/React-19-61DAFB?logo=react)](https://react.dev)
 
-🚀 If you haven't connected to Nx Cloud yet, [complete your setup here](https://cloud.nx.app/get-started). Get faster builds with remote caching, distributed task execution, and self-healing CI. [See how your workspace can benefit](#nx-cloud).
+---
 
+## Why this exists
 
-## Quick Start
+Classic MFE monorepos force every developer to clone **every** remote. With dozens of teams and private repos, that breaks:
+
+- **Permission model** — not everyone should have source for every domain
+- **Clone time / disk** — megarepos that nobody wants to sync
+- **Ownership** — remotes should ship and version on their own release cadence
+
+**Polyfed** keeps a thin **platform** git repo (shell + shared packages + tooling) and treats each micro-frontend as its **own git repository**. Developers pull remotes on demand. The shell still federates them at runtime.
+
+| Approach | Pain |
+| -------- | ---- |
+| One giant monorepo | Everyone clones everything |
+| Git submodules | Awkward DX, easy to desync |
+| **Polyfed** | Platform + optional local remotes + URL registry |
+
+---
+
+## Suggested public names
+
+| Use | Name |
+| --- | ---- |
+| **GitHub repo** | `polyfed` |
+| **LinkedIn / talk title** | Polyfed: Polyrepo Module Federation for React |
+| **Tagline** | Pull the remotes you own. Federate the rest. |
+
+Alternatives if `polyfed` is taken: `polyrepo-mfe`, `on-demand-federation`, `nx-vite-polyfed`.
+
+---
+
+## Architecture at a glance
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  PLATFORM REPO (this git)                                   │
+│  apps/shell · packages/{mf-config,ui,auth} · tools · scripts│
+└────────────────────────────┬────────────────────────────────┘
+                             │ remotes.json registry
+         ┌───────────────────┼───────────────────┐
+         ▼                   ▼                   ▼
+   git clone A         git clone B          entry.prod URL
+   apps/orders/        apps/billing/        (no local folder)
+         │                   │                   │
+         └───────── Module Federation ───────────┘
+                             │
+                      apps/shell (host)
+```
+
+**Single registry:** `packages/mf-config/remotes.json`  
+**Browser-safe slice:** `packages/mf-config/nav.json` (name / title / blurb only — no git URLs in the client bundle)
+
+Shell routes, sider, home cards, and Vite `federation.remotes` all derive from the registry. You do **not** hand-edit the router for each new remote.
+
+---
+
+## Stack
+
+| Layer | Choice |
+| ----- | ------ |
+| Workspace | [Nx](https://nx.dev) + [Bun](https://bun.sh) workspaces |
+| Bundler / MF | [Vite](https://vite.dev) + [@module-federation/vite](https://module-federation.io) |
+| UI | React 19, Ant Design, Tailwind CSS v4 (shared package) |
+| Routing | TanStack Router (shell) |
+| Auth | OIDC (`oidc-client`) + shared Axios client (`@react-mfe/auth`) |
+| Remote scaffold | Local Nx generator `@react-mfe/workspace-plugin:remote` |
+
+---
+
+## Quick start
 
 ```sh
-# Create a new workspace from this template
-npx create-nx-workspace@latest my-workspace --template nrwl/react-mfe-template
+git clone https://github.com/<you>/polyfed.git
+cd polyfed
+bun install
 
-cd my-workspace
+# Optional: pull remotes you can access
+bun run pull-remote --name promotions
+# bun run pull-remote --all
 
-# Serve the shell (host) on its own - loads providers at runtime from localhost
-npx nx run @react-mfe/shell:dev
+cp apps/shell/.env.example apps/shell/.env   # OIDC can stay "disabled" locally
 
-# Serve a provider - the shell comes along automatically (dependsOn shell:dev),
-# so you can browse http://localhost:4200 and see the provider federated in,
-# or hit the provider's own port to see it standalone.
-npx nx run @react-mfe/shop:dev
-npx nx run @react-mfe/cart:dev
-
-# Or bring up everything at once (the shared shell:dev starts only once)
-npx nx run-many -t dev -p shop cart
-
-# Build all apps in parallel for production
-npx nx run-many -t build --parallel=3
+bun run dev
 ```
 
-When everything is running:
+| App | URL |
+| --- | --- |
+| Shell (host) | http://127.0.0.1:4200 |
+| Each checked-out remote | http://127.0.0.1:&lt;port&gt; from `remotes.json` |
 
-- Shell (host): http://localhost:4200 (Home / Shop / Cart routes)
-- Shop provider standalone: http://localhost:5101
-- Cart provider standalone: http://localhost:5102
+Wait until Vite prints ready for **shell and every checked-out remote**. Opening a federated route before that remote’s port is up causes `RUNTIME-008` (missing `remoteEntry.js`).
 
-The `dev` target on each provider declares `dependsOn: ["shell:dev"]`, so
-`nx dev shop`, `nx dev cart`, or `nx run-many -t dev -p shop cart` all boot the
-shell too - no need to start it in a separate terminal.
+Dev host is standardized on **`127.0.0.1`** (not `localhost`) so Vite, MF entry URLs, and OIDC redirect URIs stay aligned.
 
 ---
 
-## What's Inside
+## Polyrepo commands
 
+| Command | What it does |
+| ------- | ------------ |
+| `bun run pull-remote --name <n>` | Clone (or copy `template:…`) into `apps/<n>` |
+| `bun run pull-remote --all` | Pull every remote listed in the registry |
+| `bun run pull-remote --name <n> --force` | Replace existing checkout |
+| `bun run drop-remote --name <n>` | Delete local folder only — registry stays |
+| `bun run create-remote --name=… --port=…` | Scaffold app + update registry (Nx generator) |
+| `bun run delete-remote --name <n>` | Unregister + delete local folder |
+| `bun run dev` | Shell + **only checked-out** remotes |
+
+Shared helpers live in `scripts/lib/polyrepo.mjs` (registry IO, Windows-safe deletes, `bun install`).
+
+### `repo` field
+
+```json
+"repo": "https://github.com/org/my-remote.git"
+"repo": "template:example-promotions"
 ```
-apps/
-  shell/    - Consumer (host) - TanStack Router app; one route per federated module
-  shop/     - Provider (remote) - product catalog with category filter, port 5101
-  cart/     - Provider (remote) - order summary with quantities + totals, port 5102
-packages/
-  ui/       - Shared library (@react-mfe/ui) - theme tokens, sample catalog,
-              ProductCard / ProductGrid / StarRating / Badge - imported by every app
-```
 
-### Tags
+- Git URL → `git clone` into `apps/<name>`
+- `template:<folder>` → copy from `templates/<folder>` (demo seeds without a remote git repo yet)
 
-Each project carries module-boundary tags for future `@nx/enforce-module-boundaries` lint rules:
+### `entry.dev` / `entry.prod`
 
-| Project | Tags                       |
-| ------- | -------------------------- |
-| shell   | scope:shell, type:consumer |
-| shop    | scope:shop, type:provider  |
-| cart    | scope:cart, type:provider  |
-| ui      | scope:shared, type:ui      |
+| Situation | Shell behavior |
+| --------- | -------------- |
+| `apps/<name>` exists | Load `entry.dev` (local Vite) |
+| No checkout, `entry.prod` set | Load deployed `remoteEntry.js` |
+| No checkout, empty prod | Remote marked **offline** — hint to `pull-remote` |
 
 ---
 
-## How Module Federation Works Here
-
-This template uses **Vite + @module-federation/vite** (the `@nx/react:consumer` and `@nx/react:provider` generators,
-NOT the deprecated `host`/`remote` generators removed in Nx 24).
-
-### Dynamic federation (no build-time remote list)
-
-The shell does not list remotes at build time. Instead `apps/shell/src/mf.ts` calls `registerRemotes()` at runtime
-with each provider's URL. This means:
-
-- Providers can be deployed independently - the shell picks them up from their URL, no rebuild needed.
-- Adding a new provider = add one entry to `PROVIDERS` in `mf.ts` and deploy.
-
-### Routing: one page per federated module
-
-The shell is a **TanStack Router** app (`apps/shell/src/router.tsx`, code-based -
-no codegen or extra vite plugin). The root route renders the shell chrome
-(`Layout.tsx` - nav bar + `<Outlet />`); each child route maps a path to a
-federated module's page:
-
-| Route   | Renders                                      |
-| ------- | -------------------------------------------- |
-| `/`     | Home overview with links to each module      |
-| `/shop` | `shop` provider's `App`, lazy-loaded over MF |
-| `/cart` | `cart` provider's `App`, lazy-loaded over MF |
-
-Add a provider -> add one entry to `PROVIDERS` in `mf.ts` and one `createRoute`
-in `router.tsx`.
-
-### How the shell loads a provider
+## Repository layout
 
 ```
-1. Browser loads shell -> index.html
-2. shell/src/index.ts boots @module-federation/runtime, calls registerRemotes()
-3. The /shop route (pages.tsx) calls lazyProvider('shop', 'App')
-4. Runtime fetches http://localhost:5101/remoteEntry.js (ESM)
-5. Shared react/react-dom singleton negotiation happens automatically
-6. <ShopApp /> renders inside a Suspense + ProviderBoundary
-   (boundary catches network errors gracefully)
+polyfed/
+├── apps/
+│   ├── shell/              # Host — committed to platform git
+│   ├── README.md
+│   └── <remote>/           # Gitignored — pull / create only
+├── packages/
+│   ├── mf-config/          # remotes.json, nav.json, Vite factories
+│   ├── ui/                 # Shared UI + Tailwind entry
+│   └── auth/               # OIDC gate + getApiClient()
+├── tools/workspace-plugin/ # nx g …:remote
+├── templates/              # template:* seeds for pull-remote
+└── scripts/                # pull / drop / delete / dev-all
 ```
 
-### Federation artifacts emitted per build
-
-| App   | Key output files            | Role           |
-| ----- | --------------------------- | -------------- |
-| shell | `dist/assets/hostInit-*.js` | Consumer init  |
-| shop  | `dist/remoteEntry.js`       | Provider entry |
-| cart  | `dist/remoteEntry.js`       | Provider entry |
-
-### Shared lib (@react-mfe/ui)
-
-Every app imports from `@react-mfe/ui` (resolved via `vite.resolve.alias` at build time): the providers pull
-`ProductCard` / `ProductGrid` / the sample catalog, the shell pulls `Badge`. The lib's `index.ts` also side-effect
-imports `theme.css`, so the shared design tokens load in whichever app imports the lib - no per-app stylesheet.
-The lib ships its source directly - no separate build step needed since each app bundles it with its chunks.
+Platform `.gitignore` ignores `/apps/*` except `shell`.  
+`.nxignore` re-includes those folders so Nx still sees checked-out remotes on the project graph.
 
 ---
 
-## Adding More Providers
+## Adding a remote (happy path)
 
 ```sh
-# Generate a new provider wired to the shell consumer
-npx nx g @nx/react:provider apps/checkout --bundler=vite --consumer=shell --port=5103
+# 1. Scaffold into apps/<name> + remotes.json + nav.json
+bun run create-remote --name=orders --port=5105
 
-# Then add it to the shell's runtime registry in apps/shell/src/mf.ts:
-# { alias: 'checkout', name: 'checkout', entry: 'http://localhost:5103/remoteEntry.js' }
+# 2. Own git repo for the remote
+cd apps/orders
+git init && git add . && git commit -m "chore: scaffold orders remote"
+git remote add origin https://github.com/org/orders-remote.git
+git push -u origin main
+cd ../..
+
+# 3. Point platform registry at it
+#    packages/mf-config/remotes.json → "repo": "https://github.com/org/orders-remote.git"
+
+# 4. Teammates with access
+bun run pull-remote --name orders
+bun run dev
+```
+
+Exposed module is always `./App`. Import shared CSS on that file (shell loads the expose, not `bootstrap.tsx`):
+
+```ts
+import '@react-mfe/ui/styles/tailwind.css';
 ```
 
 ---
 
-## Nx Cloud
+## Auth & API
 
-Connect this workspace to Nx Cloud to get:
+Shell only:
 
-- **Remote cache** - task outputs (builds, tests) are cached and shared across every machine and CI agent.
-  A build that takes 60 s locally runs in under 2 s after the first hit.
-- **Distributed task execution** - Nx Cloud splits `nx run-many` across multiple agents, running tasks in
-  parallel across machines rather than sequentially on one.
-- **Self-healing CI** - flaky tasks are detected, automatically retried, and flagged so you fix root causes
-  instead of rerunning pipelines.
+```ts
+initAuth({ ... });
+<AuthGate>...</AuthGate>
+```
+
+Remotes:
+
+```ts
+import { getApiClient } from '@react-mfe/auth';
+
+const api = getApiClient();
+await api.get('/orders');
+```
+
+Session is shared via `localStorage` + `globalThis.__MFE_AUTH__`.  
+`oidc-client` and `axios` are MF **singletons** in `remotes.json` → `shared`.
+
+Env (Vite cwd = shell):
 
 ```sh
-npx nx connect
+cp apps/shell/.env.example apps/shell/.env
 ```
 
-Or go directly to: https://cloud.nx.app/get-started
+| Variable | Purpose |
+| -------- | ------- |
+| `VITE_OIDC_AUTHORITY` | IdP issuer, or `disabled` to skip the gate |
+| `VITE_OIDC_CLIENT_ID` | SPA client id, or `disabled` |
+| `VITE_OIDC_SCOPE` | Optional scopes |
+| `VITE_API_BASE_URL` | Axios `baseURL` |
+
+Register at the IdP:
+
+- `http://127.0.0.1:4200/auth/callback`
+- `http://127.0.0.1:4200/silent-renew.html`
 
 ---
 
-## Install Nx Console
+## Registry split (nav vs remotes)
 
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
+| File | Consumed by | Contains |
+| ---- | ----------- | -------- |
+| `remotes.json` | Vite (Node), scripts, generator | ports, `repo`, `entry`, `shared` |
+| `nav.json` | Shell React (browser) | `name`, `title`, `blurb` (+ shell name/port) |
 
-[Install Nx Console &raquo;](https://nx.dev/docs/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+Create/delete flows rewrite **both**. Prefer not to hand-edit `nav.json` alone.
 
-## 🔗 Learn More
+---
 
-- [Nx Documentation](https://nx.dev/docs)
-- [Crafting Your Workspace Tutorial](https://nx.dev/docs/getting-started/tutorials/crafting-your-workspace)
-- [Module Boundaries](https://nx.dev/docs/features/enforce-module-boundaries)
-- [Module Federation Overview](https://nx.dev/docs/technologies/module-federation/concepts/nx-module-federation-technical-overview)
-- [Vite](https://nx.dev/docs/technologies/build-tools/vite)
-- [Nx Cloud](https://nx.dev/nx-cloud)
+## Design principles
 
-## 💬 Community
+1. **Platform is thin** — shell, shared UI/auth/config, generators, scripts  
+2. **Remotes are products** — own git history, own deploy of `remoteEntry.js`  
+3. **Registry is the contract** — one JSON drives MF + navigation  
+4. **Checkout is optional** — local Vite or `entry.prod`  
+5. **Permissions follow git** — no pull access, no source on disk  
 
-Join the Nx community:
+---
 
-- [Discord](https://go.nx.dev/community)
-- [X (Twitter)](https://twitter.com/nxdevtools)
-- [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [YouTube](https://www.youtube.com/@nxdevtools)
-- [Blog](https://nx.dev/blog)
+## Use this as a case study
+
+**Problem:** multi-team MFE with private remotes and a shared host.  
+**Constraint:** developers must not clone every remote.  
+**Solution:** polyrepo remotes + registry-driven Module Federation + on-demand `pull-remote`.
+
+Talking points for LinkedIn / portfolio:
+
+- Separated **platform ownership** from **domain remotes**
+- Kept DX close to a monorepo (`bun run dev`, shared packages) without the clone tax
+- Made unavailable remotes explicit (offline UI + honest entry resolution) instead of opaque MF fetch failures
+
+---
+
+## Scripts reference
+
+| npm script | Implementation |
+| ---------- | -------------- |
+| `dev` | `scripts/dev-all.mjs` — `nx run-many -t dev` for shell + checkouts |
+| `create-remote` | `nx g @react-mfe/workspace-plugin:remote` |
+| `pull-remote` | `scripts/pull-remote.mjs` |
+| `drop-remote` | `scripts/drop-remote.mjs` |
+| `delete-remote` | `scripts/delete-remote.mjs` |
+
+---
+
+## Learn more
+
+- [Nx](https://nx.dev/docs)
+- [Module Federation](https://module-federation.io)
+- [Vite](https://vite.dev)
+- [TanStack Router](https://tanstack.com/router)
+
+---
+
+## License
+
+MIT — use, fork, and adapt for your platform.

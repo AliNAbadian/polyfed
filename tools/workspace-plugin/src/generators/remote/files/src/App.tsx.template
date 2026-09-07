@@ -1,3 +1,5 @@
+import '@react-mfe/ui/styles/tailwind.css';
+
 export function App() {
   return (
     <section className="p-6" data-testid="<%= name %>">

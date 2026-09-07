@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/schema",
   "$id": "Remote",
   "title": "MF Remote",
-  "description": "Scaffold a Module Federation remote under apps/<name> and register it in remotes.json",
+  "description": "Scaffold a polyrepo Module Federation remote under apps/<name> and register it in remotes.json",
   "type": "object",
   "properties": {
     "name": {
@@ -27,6 +27,14 @@
     "blurb": {
       "type": "string",
       "description": "Short description on the shell home card"
+    },
+    "repo": {
+      "type": "string",
+      "description": "Git clone URL (or template:<id>) for bun run pull-remote"
+    },
+    "prodEntry": {
+      "type": "string",
+      "description": "Production remoteEntry.js URL for teammates without local checkout"
     }
   },
   "required": ["name"]
