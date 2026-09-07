@@ -47,30 +47,6 @@
         "vitest": "~4.1.0",
       },
     },
-    "apps/promotions": {
-      "name": "@react-mfe/promotions",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ant-design/cssinjs": "^2.1.2",
-        "@react-mfe/auth": "workspace:*",
-        "@react-mfe/mf-config": "workspace:*",
-        "@react-mfe/ui": "workspace:*",
-        "antd": "^6.6.2",
-        "axios": "^1.20.0",
-        "react": "^19.0.0",
-        "react-dom": "^19.0.0",
-      },
-      "devDependencies": {
-        "@module-federation/vite": "^1.15.5",
-        "@tailwindcss/vite": "^4.3.3",
-        "@types/react": "^19.0.0",
-        "@types/react-dom": "^19.0.0",
-        "@vitejs/plugin-react": "^6.0.2",
-        "tailwindcss": "^4.3.3",
-        "typescript": "~6.0.3",
-        "vite": "^8.0.13",
-      },
-    },
     "apps/shell": {
       "name": "@react-mfe/shell",
       "version": "0.0.0",
@@ -114,6 +90,24 @@
       },
       "devDependencies": {
         "@module-federation/vite": "^1.15.5",
+        "@tailwindcss/vite": "^4.3.3",
+        "@types/react": "^19.0.0",
+        "@types/react-dom": "^19.0.0",
+        "@vitejs/plugin-react": "^6.0.2",
+        "tailwindcss": "^4.3.3",
+        "typescript": "~6.0.3",
+        "vite": "^8.0.13",
+      },
+    },
+    "apps/www": {
+      "name": "@react-mfe/www",
+      "version": "0.1.0",
+      "dependencies": {
+        "@react-mfe/ui": "workspace:*",
+        "react": "^19.0.0",
+        "react-dom": "^19.0.0",
+      },
+      "devDependencies": {
         "@tailwindcss/vite": "^4.3.3",
         "@types/react": "^19.0.0",
         "@types/react-dom": "^19.0.0",
@@ -791,8 +785,6 @@
 
     "@react-mfe/mf-config": ["@react-mfe/mf-config@workspace:packages/mf-config"],
 
-    "@react-mfe/promotions": ["@react-mfe/promotions@workspace:apps/promotions"],
-
     "@react-mfe/shell": ["@react-mfe/shell@workspace:apps/shell"],
 
     "@react-mfe/targeting": ["@react-mfe/targeting@workspace:apps/targeting"],
@@ -800,6 +792,8 @@
     "@react-mfe/ui": ["@react-mfe/ui@workspace:packages/ui"],
 
     "@react-mfe/workspace-plugin": ["@react-mfe/workspace-plugin@workspace:tools/workspace-plugin"],
+
+    "@react-mfe/www": ["@react-mfe/www@workspace:apps/www"],
 
     "@rolldown/binding-android-arm-eabi": ["@rolldown/binding-android-arm-eabi@1.2.7", "", { "os": "android", "cpu": "arm" }, "sha512-EypzgnYCwyVY4NDHKzGmNJT5b+XaQEBniHxsMdeIQLB/tcCzZnhqrzHpZFbX9iaxx+5RiB8caATBtfvZP7zVxQ=="],
 
