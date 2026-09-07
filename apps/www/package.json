@@ -1,6 +1,6 @@
 {
-  "name": "@react-mfe/<%= name %>",
-  "version": "0.0.0",
+  "name": "@react-mfe/www",
+  "version": "0.1.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -9,17 +9,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@ant-design/cssinjs": "^2.1.2",
-    "@react-mfe/auth": "workspace:*",
-    "@react-mfe/mf-config": "workspace:*",
     "@react-mfe/ui": "workspace:*",
-    "antd": "^6.6.2",
-    "axios": "^1.20.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
-    "@module-federation/vite": "^1.15.5",
     "@tailwindcss/vite": "^4.3.3",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
@@ -30,23 +24,22 @@
   },
   "nx": {
     "projectType": "application",
-    "sourceRoot": "apps/<%= name %>/src",
-    "tags": ["scope:<%= name %>", "type:provider"],
+    "sourceRoot": "apps/www/src",
+    "tags": ["scope:www", "type:marketing"],
     "targets": {
       "dev": {
         "executor": "nx:run-commands",
         "continuous": true,
         "options": {
           "command": "vite",
-          "cwd": "apps/<%= name %>"
-        },
-        "dependsOn": ["@react-mfe/shell:dev"]
+          "cwd": "apps/www"
+        }
       },
       "build": {
         "executor": "nx:run-commands",
         "options": {
           "command": "vite build",
-          "cwd": "apps/<%= name %>"
+          "cwd": "apps/www"
         }
       },
       "preview": {
@@ -54,7 +47,7 @@
         "continuous": true,
         "options": {
           "command": "vite preview",
-          "cwd": "apps/<%= name %>"
+          "cwd": "apps/www"
         }
       }
     }

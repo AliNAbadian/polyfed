@@ -48,6 +48,14 @@
           "command": "vite build",
           "cwd": "apps/promotions"
         }
+      },
+      "preview": {
+        "executor": "nx:run-commands",
+        "continuous": true,
+        "options": {
+          "command": "vite preview",
+          "cwd": "apps/promotions"
+        }
       }
     }
   }

@@ -5,6 +5,9 @@
   "license": "MIT",
   "scripts": {
     "dev": "bun scripts/dev-all.mjs",
+    "build": "bun scripts/build-all.mjs",
+    "preview": "bun scripts/preview-all.mjs",
+    "www": "nx run @react-mfe/www:dev",
     "create-remote": "nx g @react-mfe/workspace-plugin:remote --no-interactive",
     "pull-remote": "bun scripts/pull-remote.mjs",
     "drop-remote": "bun scripts/drop-remote.mjs",

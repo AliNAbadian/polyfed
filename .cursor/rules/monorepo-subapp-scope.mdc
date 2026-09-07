@@ -11,10 +11,10 @@ This repository is an **Nx / workspace monorepo**. Cursor rules under `.cursor/r
 
 Treat every **child project** as an app that must follow these rules:
 
-| Kind | Paths | Examples |
-| ---- | ----- | -------- |
-| Subapps (MF host + checked-out remotes) | `apps/*` | `apps/shell`, `apps/<remote>` (polyrepo checkout) |
-| Shared packages / libs | `packages/*` | `packages/ui`, `packages/mf-config`, `packages/auth` |
+| Kind                                    | Paths        | Examples                                             |
+| --------------------------------------- | ------------ | ---------------------------------------------------- |
+| Subapps (MF host + checked-out remotes) | `apps/*`     | `apps/shell`, `apps/<remote>` (polyrepo checkout)    |
+| Shared packages / libs                  | `packages/*` | `packages/ui`, `packages/mf-config`, `packages/auth` |
 
 When an agent scaffolds, refactors, or reviews code:
 
@@ -27,7 +27,7 @@ When an agent scaffolds, refactors, or reviews code:
 ## Mental model
 
 ```txt
-sale-platform-shoniz/          ← platform git (shell + packages + tools)
+polyfed/          ← platform git (shell + packages + tools)
   apps/shell/                  ← host — RULES APPLY HERE
   apps/<remote>/               ← optional local clone — RULES APPLY HERE
   packages/ui/                 ← shared — RULES APPLY HERE

@@ -5,6 +5,7 @@
 | Path | In platform git? | Role |
 | ---- | ---------------- | ---- |
 | `shell/` | yes | Host / consumer |
+| `www/` | yes | Marketing / case-study site (not an MF remote) |
 | `<remote>/` | no | Separate git repo, optional local checkout |
 
 ## Workflow
