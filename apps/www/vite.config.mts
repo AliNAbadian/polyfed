@@ -6,7 +6,11 @@ import tailwindcss from '@tailwindcss/vite';
 const appDir = import.meta.dirname;
 const workspaceRoot = resolve(appDir, '../..');
 
+// Local default `/`. CI / Pages: VITE_BASE=/polyfed/
+const base = process.env.VITE_BASE ?? '/';
+
 export default defineConfig({
+  base,
   server: {
     port: 4300,
     strictPort: true,

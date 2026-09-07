@@ -1,0 +1,53 @@
+name: Deploy www (GitHub Pages)
+
+on:
+  push:
+    branches: [main, master, dev]
+    paths:
+      - 'apps/www/**'
+      - 'packages/ui/**'
+      - 'package.json'
+      - 'bun.lock'
+      - '.github/workflows/www-pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages-www
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install
+        run: bun install --frozen-lockfile
+
+      - name: Build www
+        run: bunx nx run @react-mfe/www:build
+        env:
+          VITE_BASE: /polyfed/
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: apps/www/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
