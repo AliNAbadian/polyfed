@@ -4,6 +4,7 @@ import { InstallCommand } from '../components/install-command';
 import { SectionHeader } from '../components/section-header';
 import { StepScrubber } from '../components/step-scrubber';
 import { TerminalPanel } from '../components/terminal-panel';
+import { WALKTHROUGH } from '../content';
 import { useWalkthroughSteps } from '../hooks/use-walkthrough-steps';
 
 export function WalkthroughSection() {
@@ -19,17 +20,17 @@ export function WalkthroughSection() {
       <div className="section-max">
         <SectionHeader
           id="walkthrough-heading"
-          index="4.0 Session →"
+          index={WALKTHROUGH.index}
           title={
             <>
-              Pull → federate.
+              {WALKTHROUGH.lead}
               <span className="text-[var(--color-text-secondary)]">
                 {' '}
-                A terminal session, not a marketing carousel.
+                {WALKTHROUGH.trail}
               </span>
             </>
           }
-          description="Scrub the real CLI path. URL keeps ?step= in sync. Toggle Local / Prod / Offline to see how entries resolve."
+          description={WALKTHROUGH.description}
         />
 
         <div className="grid gap-10 lg:grid-cols-2">

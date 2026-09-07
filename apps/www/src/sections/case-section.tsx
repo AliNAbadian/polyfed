@@ -1,5 +1,5 @@
 import { SectionHeader } from '../components/section-header';
-import { CASE_POINTS } from '../content';
+import { CASE, CASE_POINTS } from '../content';
 
 export function CaseSection() {
   return (
@@ -11,17 +11,17 @@ export function CaseSection() {
       <div className="section-max">
         <SectionHeader
           id="case-heading"
-          index="7.0 Evidence →"
+          index={CASE.index}
           title={
             <>
-              Talking points with paths.
+              {CASE.lead}
               <span className="text-[var(--color-text-secondary)]">
                 {' '}
-                Claims without a file path do not ship here.
+                {CASE.trail}
               </span>
             </>
           }
-          description="Use this strip for GitHub README or a short architecture walk-through — denser than a feature wall."
+          description={CASE.description}
         />
 
         <dl className="m-0">

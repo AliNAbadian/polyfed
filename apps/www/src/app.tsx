@@ -1,4 +1,5 @@
 import { SiteNav } from './components/site-nav';
+import { FOOTER } from './content';
 import { HeroSection } from './sections/hero-section';
 import { InstallSection } from './sections/install-section';
 import { ProblemSection } from './sections/problem-section';
@@ -29,15 +30,8 @@ export function App() {
       </main>
       <footer className="section-pad border-t border-[var(--color-border-subtle)]">
         <div className="section-max flex flex-wrap items-center justify-between gap-4 text-sm text-[var(--color-text-tertiary)]">
-          <p className="m-0">
-            <span className="font-semibold text-[var(--color-text-primary)]">
-              Polyfed
-            </span>{' '}
-            — polyrepo Module Federation for React.
-          </p>
-          <p className="m-0 font-mono text-[12px]">
-            v0.1.0 · MIT · not an MF remote
-          </p>
+          <p className="m-0 text-[var(--color-text-secondary)]">{FOOTER.blurb}</p>
+          <p className="m-0 font-mono text-[12px]">{FOOTER.meta}</p>
         </div>
       </footer>
     </div>

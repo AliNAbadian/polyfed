@@ -1,5 +1,5 @@
 import { SectionHeader } from '../components/section-header';
-import { REGISTRY_ROWS } from '../content';
+import { REGISTRY, REGISTRY_ROWS } from '../content';
 
 export function RegistrySection() {
   return (
@@ -11,17 +11,17 @@ export function RegistrySection() {
       <div className="section-max">
         <SectionHeader
           id="registry-heading"
-          index="5.0 Registry →"
+          index={REGISTRY.index}
           title={
             <>
-              Browser never ships git URLs.
+              {REGISTRY.lead}
               <span className="text-[var(--color-text-secondary)]">
                 {' '}
-                Vite reads remotes.json; React reads nav.json.
+                {REGISTRY.trail}
               </span>
             </>
           }
-          description="Split the registry so the client bundle stays clean and scripts keep full checkout metadata."
+          description={REGISTRY.description}
         />
 
         <dl className="m-0 border-t border-[var(--color-border-subtle)]">

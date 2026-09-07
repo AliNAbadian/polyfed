@@ -1,5 +1,5 @@
 import { SectionHeader } from '../components/section-header';
-import { MODEL_SNIPPETS } from '../content';
+import { MODEL, MODEL_SNIPPETS } from '../content';
 
 export function ModelSection() {
   return (
@@ -11,17 +11,17 @@ export function ModelSection() {
       <div className="section-max">
         <SectionHeader
           id="model-heading"
-          index="3.0 Model →"
+          index={MODEL.index}
           title={
             <>
-              Platform owns the dock.
+              {MODEL.lead}
               <span className="text-[var(--color-text-secondary)]">
                 {' '}
-                Remotes are stamped crates you pull on demand.
+                {MODEL.trail}
               </span>
             </>
           }
-          description="Three contracts: platform git, remote repos, and resolveRemoteEntry honesty. Evidence sits under each claim."
+          description={MODEL.description}
         />
 
         <ul className="m-0 grid list-none gap-0 p-0 md:grid-cols-3">

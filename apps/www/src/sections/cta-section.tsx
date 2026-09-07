@@ -1,5 +1,5 @@
 import { InstallCommand } from '../components/install-command';
-import { INSTALL_COMMAND, REPO_URL } from '../content';
+import { CTA, INSTALL_COMMAND, REPO_URL } from '../content';
 
 export function CtaSection() {
   return (
@@ -15,19 +15,14 @@ export function CtaSection() {
               id="cta-heading"
               className="mb-4 text-[clamp(24px,3vw,38px)] font-semibold leading-[1.15] tracking-[-0.03em]"
             >
-              Clone the platform.
+              {CTA.lead}
               <span className="text-[var(--color-text-secondary)]">
                 {' '}
-                Run the dock.
+                {CTA.trail}
               </span>
             </h2>
             <p className="mb-6 max-w-[70ch] text-[15px] text-[var(--color-text-secondary)]">
-              Live federation stays in the shell on 4200. This site is the story —
-              second terminal for{' '}
-              <code className="font-mono text-[13px] text-[var(--color-fn)]">
-                bun run www
-              </code>
-              .
+              {CTA.body}
             </p>
             <div className="flex flex-wrap gap-3">
               <a
@@ -36,16 +31,16 @@ export function CtaSection() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Open repository
+                {CTA.primaryCta}
               </a>
               <a className="btn-ghost" href="#walkthrough">
-                Replay session
+                {CTA.secondaryCta}
               </a>
             </div>
           </div>
           <div className="md:col-span-5 md:col-start-8">
             <p className="mb-3 font-mono text-[12px] text-[var(--color-text-tertiary)]">
-              8.0 CTA →
+              {CTA.index}
             </p>
             <InstallCommand command={INSTALL_COMMAND} />
           </div>

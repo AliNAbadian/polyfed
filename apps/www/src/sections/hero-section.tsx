@@ -1,6 +1,7 @@
 import { CodeBlock } from '../components/code-block';
 import { InstallCommand } from '../components/install-command';
 import {
+  HERO,
   HERO_COPY,
   HERO_FILENAME,
   HERO_LANG,
@@ -142,33 +143,20 @@ export function HeroSection() {
       <div className="section-max grid items-start gap-10 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)]">
         <div>
           <p className="mb-4 font-mono text-[13px] text-[var(--color-text-tertiary)]">
-            polyfed · MIT · Nx + Vite MF
+            {HERO.eyebrow}
           </p>
           <h1
             id="hero-heading"
             className="mb-6 text-[clamp(32px,5vw,56px)] font-semibold leading-[1.05] tracking-[-0.03em]"
           >
-            Pull the remotes you own.
+            {HERO.lead}
             <span className="text-[var(--color-text-secondary)]">
               {' '}
-              Federate the rest — without cloning the whole monorepo.
+              {HERO.trail}
             </span>
           </h1>
           <p className="mb-8 max-w-[70ch] text-[15px] text-[var(--color-text-secondary)] md:text-base">
-            Polyrepo Module Federation for React. Platform git holds the shell and
-            packages; remotes stay separate repos with honest{' '}
-            <code className="font-mono text-[13px] text-[var(--color-fn)]">
-              entry.dev
-            </code>{' '}
-            /{' '}
-            <code className="font-mono text-[13px] text-[var(--color-fn)]">
-              entry.prod
-            </code>{' '}
-            /{' '}
-            <code className="font-mono text-[13px] text-[var(--color-const)]">
-              null
-            </code>
-            .
+            {HERO.body}
           </p>
           <div className="mb-6 flex flex-wrap gap-3">
             <a
@@ -177,10 +165,10 @@ export function HeroSection() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              Clone repository
+              {HERO.primaryCta}
             </a>
             <a className="btn-ghost" href="#walkthrough">
-              Watch session
+              {HERO.secondaryCta}
             </a>
           </div>
           <InstallCommand command={INSTALL_COMMAND} />

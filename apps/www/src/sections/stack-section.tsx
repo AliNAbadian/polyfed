@@ -1,6 +1,6 @@
 import { InstallCommand } from '../components/install-command';
 import { SectionHeader } from '../components/section-header';
-import { STACK_COMMANDS } from '../content';
+import { STACK, STACK_COMMANDS } from '../content';
 
 export function StackSection() {
   return (
@@ -12,17 +12,17 @@ export function StackSection() {
       <div className="section-max">
         <SectionHeader
           id="stack-heading"
-          index="6.0 CLI →"
+          index={STACK.index}
           title={
             <>
-              Commands that matter.
+              {STACK.lead}
               <span className="text-[var(--color-text-secondary)]">
                 {' '}
-                Nx + Bun + Vite Module Federation.
+                {STACK.trail}
               </span>
             </>
           }
-          description="Auth and axios stay platform singletons. Presentation site runs on 4300 — never mixed into bun run dev."
+          description={STACK.description}
         />
 
         <ul className="m-0 grid list-none gap-px bg-[var(--color-border-subtle)] p-0 md:grid-cols-2">

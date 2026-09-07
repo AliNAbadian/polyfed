@@ -1,5 +1,5 @@
 import { SectionHeader } from '../components/section-header';
-import { PROBLEM_ROWS } from '../content';
+import { PROBLEM, PROBLEM_ROWS } from '../content';
 
 export function ProblemSection() {
   return (
@@ -11,24 +11,24 @@ export function ProblemSection() {
       <div className="section-max">
         <SectionHeader
           id="problem-heading"
-          index="2.0 Diff →"
+          index={PROBLEM.index}
           title={
             <>
-              Fat monorepo vs Polyfed.
+              {PROBLEM.lead}
               <span className="text-[var(--color-text-secondary)]">
                 {' '}
-                Same federation, different checkout contract.
+                {PROBLEM.trail}
               </span>
             </>
           }
-          description="Cargo you did not order leaves the clone. Missing remotes become offline UI or prod entries — not broken builds."
+          description={PROBLEM.description}
         />
 
         <div className="frame-outer">
           <div className="frame-inner overflow-x-auto">
             <table className="w-full min-w-[40rem] border-collapse text-left">
               <caption className="sr-only">
-                Comparison of monorepo Module Federation pain versus Polyfed
+                Fat monorepo Module Federation versus Polyfed
               </caption>
               <thead>
                 <tr className="bg-[var(--color-bg-elevated)]">
@@ -36,7 +36,7 @@ export function ProblemSection() {
                     scope="col"
                     className="border-b border-[var(--color-border-subtle)] px-4 py-3 font-mono text-[12px] font-medium text-[var(--color-err)]"
                   >
-                    − monorepo
+                    − megarepo
                   </th>
                   <th
                     scope="col"
