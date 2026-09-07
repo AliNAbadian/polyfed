@@ -9,7 +9,7 @@ bun run pull-remote --name <name>
 
 When you own this remote:
 
-1. `git init` here (if scaffolded via create-remote)
+1. `git init` here (if scaffolded via `bun run create-remote`)
 2. Push to a private repo your team can access
 3. Set `"repo": "<git-url>"` on the remote entry in platform `packages/mf-config/remotes.json`
 4. Optionally set `"entry": { "prod": "https://…/remoteEntry.js" }` for teammates who do not check out this app

@@ -16,7 +16,6 @@ import {
   existsSync,
   mkdirSync,
   readFileSync,
-  rmSync,
   writeFileSync,
 } from 'node:fs';
 import { join, resolve } from 'node:path';
@@ -24,18 +23,19 @@ import { spawnSync } from 'node:child_process';
 import {
   appDir,
   arg,
+  assertRemoteName,
+  bunInstall,
+  failUsage,
   hasFlag,
   isCheckedOut,
   parseRepo,
   readRemotesConfig,
+  removeAppDir,
   workspaceRoot,
 } from './lib/polyrepo.mjs';
 
 const root = workspaceRoot(import.meta.dirname);
-
-function usage(message) {
-  if (message) console.error(`Error: ${message}\n`);
-  console.error(`Usage:
+const USAGE = `Usage:
   bun run pull-remote --name <kebab-name> [--force]
   bun run pull-remote --all [--force]
 
@@ -43,9 +43,7 @@ Options:
   --name    Remote in remotes.json
   --all     Pull every remote listed in remotes.json
   --force   Replace existing apps/<name>
-`);
-  process.exit(1);
-}
+`;
 
 function copyTemplate(templateId, dest, remote) {
   const src = join(root, 'templates', templateId);
@@ -60,8 +58,8 @@ function copyTemplate(templateId, dest, remote) {
     const pkg = JSON.parse(readFileSync(pkgPath, 'utf8'));
     pkg.name = `@react-mfe/${remote.name}`;
     if (pkg.scripts) {
-      pkg.scripts.dev = `vite --port ${remote.port} --strictPort`;
-      pkg.scripts.preview = `vite preview --port ${remote.port} --strictPort`;
+      pkg.scripts.dev = 'vite';
+      pkg.scripts.preview = 'vite preview';
     }
     if (pkg.nx) {
       pkg.nx.sourceRoot = `apps/${remote.name}/src`;
@@ -118,12 +116,7 @@ function pullOne(remote, force) {
       console.log(`skip ${name} — apps/${name} already exists (use --force)`);
       return 'skipped';
     }
-    rmSync(dest, {
-      recursive: true,
-      force: true,
-      maxRetries: 10,
-      retryDelay: 200,
-    });
+    removeAppDir(root, name, { hintCommand: 'pull-remote' });
   }
 
   if (parsed.kind === 'none') {
@@ -154,19 +147,20 @@ const name = arg('--name');
 const all = hasFlag('--all');
 const force = hasFlag('--force');
 
-if (!name && !all) usage('pass --name <remote> or --all');
-if (name && all) usage('use either --name or --all, not both');
-if (name && !/^[a-z][a-z0-9-]*$/.test(name)) {
-  usage('--name must be kebab-case');
+if (!name && !all) failUsage(USAGE, 'pass --name <remote> or --all');
+if (name && all) failUsage(USAGE, 'use either --name or --all, not both');
+if (name) {
+  const nameErr = assertRemoteName(name);
+  if (nameErr) failUsage(USAGE, nameErr);
 }
 
 const config = readRemotesConfig(root);
 const targets = all
   ? config.remotes
-  : [config.remotes.find((r) => r.name === name)].filter(Boolean);
+  : config.remotes.filter((r) => r.name === name);
 
 if (!all && targets.length === 0) {
-  usage(`remote "${name}" not in remotes.json`);
+  failUsage(USAGE, `remote "${name}" not in remotes.json`);
 }
 
 let pulled = 0;
@@ -180,17 +174,7 @@ for (const remote of targets) {
   }
 }
 
-if (pulled > 0) {
-  const install = spawnSync('bun', ['install'], {
-    cwd: root,
-    stdio: 'inherit',
-    shell: true,
-  });
-  if (install.status !== 0) {
-    console.error('bun install failed');
-    process.exit(install.status ?? 1);
-  }
-}
+if (pulled > 0) bunInstall(root);
 
 console.log(`
 Done. Checked-out remotes join \`bun run dev\` automatically.

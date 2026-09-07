@@ -20,8 +20,8 @@ bun run pull-remote --name promotions
 bun run dev
 ```
 
-- Shell: http://localhost:4200
-- Each local remote: `http://localhost:<port>` from `packages/mf-config/remotes.json`
+- Shell: http://127.0.0.1:4200
+- Each local remote: `http://127.0.0.1:<port>` from `packages/mf-config/remotes.json` (port owned by Vite config / registry — not npm scripts)
 
 ## Polyrepo commands
 

@@ -30,16 +30,16 @@ export function remotePath(name: string): string {
   return `/${name}`;
 }
 
-/** Default localhost entry from port (browser-safe). */
+/** Default entry from port — must match Vite DEV_HOST (127.0.0.1). */
 export function remoteEntryUrl(port: number): string {
-  return `http://localhost:${port}/remoteEntry.js`;
+  return `http://127.0.0.1:${port}/remoteEntry.js`;
 }
 
 export function findRemote(name: string): RemoteDefinition | undefined {
   return REMOTES.find((remote) => remote.name === name);
 }
 
-/** Prefer entry.dev, else localhost from port (browser-safe; no fs). */
+/** Prefer entry.dev, else port-based URL (browser-safe; no fs). */
 export function browserRemoteEntry(remote: RemoteDefinition): string {
   return remote.entry?.dev ?? remoteEntryUrl(remote.port);
 }

@@ -48,6 +48,7 @@ const result = spawnSync(
     '-p',
     projects.join(','),
     `--parallel=${projects.length}`,
+    '--output-style=stream',
   ],
   { cwd: root, stdio: 'inherit', shell: true },
 );

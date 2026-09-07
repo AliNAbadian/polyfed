@@ -74,7 +74,7 @@ export async function remoteGenerator(
 
   const title = options.title ?? titleCase(name);
   const blurb = options.blurb ?? `${title} micro-frontend remote.`;
-  const entryDev = `http://localhost:${port}/remoteEntry.js`;
+  const entryDev = `http://127.0.0.1:${port}/remoteEntry.js`;
 
   config.remotes.push({
     name,

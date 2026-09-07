@@ -11,7 +11,18 @@
       "blurb": "Promotions micro-frontend remote.",
       "repo": "https://github.com/AliNAbadian/nx-remote-promotions.git",
       "entry": {
-        "dev": "http://localhost:5103/remoteEntry.js",
+        "dev": "http://127.0.0.1:5103/remoteEntry.js",
+        "prod": ""
+      }
+    },
+    {
+      "name": "targeting",
+      "port": 5104,
+      "title": "Targeting",
+      "blurb": "Targeting micro-frontend remote.",
+      "repo": "https://github.com/AliNAbadian/nx-remote-targeting.git",
+      "entry": {
+        "dev": "http://127.0.0.1:5104/remoteEntry.js",
         "prod": ""
       }
     }

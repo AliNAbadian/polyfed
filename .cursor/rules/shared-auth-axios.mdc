@@ -15,8 +15,7 @@ alwaysApply: true
 ## Env (apps/shell `.env`)
 
 ```bash
-cp .env.example apps/shell/.env
-# or root .env if Vite loads it — prefer apps/shell/.env
+cp apps/shell/.env.example apps/shell/.env
 ```
 
 | Var | Purpose |
@@ -26,7 +25,7 @@ cp .env.example apps/shell/.env
 | `VITE_OIDC_SCOPE` | optional |
 | `VITE_API_BASE_URL` | axios `baseURL` |
 
-Register redirect URIs at IdP:
+Register redirect URIs at IdP (host must match Vite `DEV_HOST` = `127.0.0.1`):
 
 - `http://127.0.0.1:4200/auth/callback`
 - `http://127.0.0.1:4200/silent-renew.html`

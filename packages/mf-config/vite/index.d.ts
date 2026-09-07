@@ -50,6 +50,10 @@ export function uiPackageAliases(appDirname: string): AliasOptions;
 
 export function workspaceRootFromApp(appDirname: string): string;
 
+export const DEV_HOST: '127.0.0.1';
+
+export function getDevOrigin(port: number): string;
+
 export function remoteEntryUrl(port: number): string;
 
 export function isRemoteCheckedOut(
@@ -57,7 +61,12 @@ export function isRemoteCheckedOut(
   workspaceRoot: string,
 ): boolean;
 
+/** null when no local checkout and no entry.prod */
 export function resolveRemoteEntry(
   remote: RemoteDefinition,
   workspaceRoot: string,
-): string;
+): string | null;
+
+export function remoteEntryMap(
+  workspaceRoot: string,
+): Record<string, string | null>;
