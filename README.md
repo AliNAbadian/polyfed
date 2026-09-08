@@ -1,5 +1,7 @@
 # Polyfed
 
+![Polyfed](docs/polyfed-readme-hero.png)
+
 **Polyrepo Module Federation for React** — Nx · Vite · Bun · Ant Design
 
 > Clone the **platform**. Pull only the remotes you have permission for. Run the shell against local checkouts or deployed `remoteEntry.js` URLs.
